@@ -97,3 +97,15 @@ InitTestScene*.unity*
 
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+
+UIFramwork/Library
+UIFramwork/UIPattern.sln
+UIFramwork/UIFramwork.sln
+UIFramwork/Assembly-CSharp-Editor.csproj
+UIFramwork/Assembly-CSharp.csproj
+UIFramwork/.vsconfig
+UIFramwork/UserSettings
+UIFramwork/Temp
+UIFramwork/obj
+UIFramwork/.vs
+UIFramwork/Logs
