@@ -1,0 +1,19 @@
+  {
+      "items": [
+    {
+      "id": 201,
+      "name": "회복 포션",
+      "type": "consumable",
+      "effect": {
+        "type": "heal",
+        "value": 50
+      }
+    },
+    {
+      "id": 202,
+      "name": "폭탄",
+      "type": "weapon",
+      "damage": 25
+    }
+  ]
+  }

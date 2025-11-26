@@ -7,7 +7,7 @@
       "description": "주니어 개발자 입니다. 오늘도 성장을 위해 밤샘 코딩을 하고 있습니다.",
       "attack": 10,
       "defence": 5,
-      "maxhp": 100,
+      "hp": 100,
       "gold": 1000,
       "currentexp": 0,
       "maxexp": 10
