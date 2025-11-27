@@ -1,4 +1,4 @@
-using System.Collections;
+Ôªøusing System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -9,7 +9,7 @@ public class ItemTooltipManager : MonoBehaviour
     
 public static ItemTooltipManager Instance { get; private set; }
 
-    [SerializeField] private GameObject tooltipPanel; // InfoBG ¿¸√º ∆–≥Œ
+    [SerializeField] private GameObject tooltipPanel; // InfoBG Ï†ÑÏ≤¥ Ìå®ÎÑê
     [SerializeField] private TextMeshProUGUI itemNameText; // ItemName
     [SerializeField] private TextMeshProUGUI descriptionText; // Description
     [SerializeField] private Button equipButton;
