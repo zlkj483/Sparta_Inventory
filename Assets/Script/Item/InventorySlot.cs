@@ -19,19 +19,16 @@ public class InventorySlot : MonoBehaviour
         currentItemData = data;
         if (ItemManager.Instance != null && !string.IsNullOrEmpty(data.iconName))
         {
-            // 1. ItemManager에게 아이콘 이름을 주고 Sprite를 받아옵니다.
+            //아이콘 이름을 주고 Sprite를 받아옴
             itemIcon.sprite = ItemManager.Instance.GetItemSprite(data.iconName);
-
-            // 2. 아이콘이 보이지 않을 수 있으므로 색상을 불투명한 흰색으로 설정합니다.
-            itemIcon.color = Color.white;
         }
         bool isEquipped = PlayerManager.Instance.IsEquipped(currentItemID);
         if (equipText != null)
         {
-            // 텍스트 내용 설정 (장착 해제 시 키 입력 처리가 없으므로 'E'만 표시)
+            // 텍스트 내용 설정
             equipText.text = "E";
 
-            //  장착 상태에 따라 E 텍스트를 영구적으로 활성화/비활성화합니다.
+            //  장착 상태에 따라 텍스트를 활성화/비활성화
             equipText.gameObject.SetActive(isEquipped);
         }
 
