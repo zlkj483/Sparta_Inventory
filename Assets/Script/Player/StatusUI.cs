@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -13,7 +13,7 @@ public class StatusUI : MonoBehaviour
     {
         if(PlayerManager.Instance == null)
         {
-            Debug.LogError("ÇÃ·¹ÀÌ¾î ÀÎ½ºÅÏ½º ¾øÀ½");
+            Debug.LogError("í”Œë ˆì´ì–´ ì¸ìŠ¤í„´ìŠ¤ ì—†ìŒ");
             return;
         }
         PlayerManager.Instance.OnPlayerStatusChanged += UpdateStatusUI;
@@ -21,7 +21,7 @@ public class StatusUI : MonoBehaviour
     }
     private void OnDestroy()
     {
-        // ¿ÀºêÁ§Æ®°¡ ÆÄ±«µÉ ¶§ ÀÌº¥Æ® µî·Ï ÇØÁ¦ (¼±ÅÃ »çÇ×ÀÌÁö¸¸ ¾ÈÀüÇÔ)
+        // ì˜¤ë¸Œì íŠ¸ê°€ íŒŒê´´ë  ë•Œ ì´ë²¤íŠ¸ ë“±ë¡ í•´ì œ (ì„ íƒ ì‚¬í•­ì´ì§€ë§Œ ì•ˆì „í•¨)
         if (PlayerManager.Instance != null)
         {
             PlayerManager.Instance.OnPlayerStatusChanged -= UpdateStatusUI;

@@ -1,4 +1,4 @@
-using Newtonsoft;
+ï»¿using Newtonsoft;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -23,7 +23,7 @@ public static PlayerManager Instance { get; private set; }
     private const string SAVE_FILE_NAME = "player_save.json";
     
 
-    public PlayerSaveData CurrentSaveData { get; private set; } = new PlayerSaveData();  //PlayerSaveData °´Ã¼°¡ PlayerData (struct)¿Í inventoryItemIds (List)¸¦ ¸ğµÎ Æ÷ÇÔ
+    public PlayerSaveData CurrentSaveData { get; private set; } = new PlayerSaveData();  //PlayerSaveData ê°ì²´ê°€ PlayerData (struct)ì™€ inventoryItemIds (List)ë¥¼ ëª¨ë‘ í¬í•¨
     public Dictionary<string, ItemData> EquippedItems { get; private set; } = new Dictionary<string, ItemData>();
 
     public PlayerData CurrentStatus => CurrentSaveData.status;
@@ -46,7 +46,7 @@ public static PlayerManager Instance { get; private set; }
     }
     public bool IsEquipped(int itemID)
     {
-        // EquippedItemsÀÇ ¸ğµç °ª(ItemData)À» ¼øÈ¸ÇÏ¸ç ID¸¦ ºñ±³
+        // EquippedItemsì˜ ëª¨ë“  ê°’(ItemData)ì„ ìˆœíšŒí•˜ë©° IDë¥¼ ë¹„êµ
         foreach (var item in EquippedItems.Values)
         {
             if (item.id == itemID)
@@ -59,10 +59,10 @@ public static PlayerManager Instance { get; private set; }
 
     private void LoadData()
     {
-        string savePath = Path.Combine(Application.persistentDataPath, SAVE_FILE_NAME); //¼¼ÀÌºêÆÄÀÏÀÇ °æ·Î ¼³Á¤
-        bool loadSuccessful = false; //·Îµå ¼º°ø ¿©ºÎ
+        string savePath = Path.Combine(Application.persistentDataPath, SAVE_FILE_NAME); //ì„¸ì´ë¸ŒíŒŒì¼ì˜ ê²½ë¡œ ì„¤ì •
+        bool loadSuccessful = false; //ë¡œë“œ ì„±ê³µ ì—¬ë¶€
 
-        if(File.Exists(savePath)) //¼¼ÀÌºê ÆÄÀÏÀÇ Á¸Àç ¿©ºÎ
+        if(File.Exists(savePath)) //ì„¸ì´ë¸Œ íŒŒì¼ì˜ ì¡´ì¬ ì—¬ë¶€
         {
             try
             {
@@ -70,35 +70,35 @@ public static PlayerManager Instance { get; private set; }
                 JToken saveRoot = JToken.Parse(jsonSaveData);
                 CurrentSaveData = saveRoot.ToObject<PlayerSaveData>();
                 loadSuccessful = true;
-                Debug.Log("¼¼ÀÌºêÆÄÀÏ ·Îµå ¼º°ø");
+                Debug.Log("ì„¸ì´ë¸ŒíŒŒì¼ ë¡œë“œ ì„±ê³µ");
             }
             catch(Exception)
             {
-                Debug.LogError("¼¼ÀÌºêÆÄÀÏ ·Îµå ¿À·ù");
+                Debug.LogError("ì„¸ì´ë¸ŒíŒŒì¼ ë¡œë“œ ì˜¤ë¥˜");
             }
         }
 
         if (!loadSuccessful)
         {
             LoadDefaultData();
-            Debug.Log("±âº» json ÆÄÀÏ·Îµå, È¤Àº ´º °ÔÀÓ");
+            Debug.Log("ê¸°ë³¸ json íŒŒì¼ë¡œë“œ, í˜¹ì€ ë‰´ ê²Œì„");
         }
 
-        if(CurrentSaveData.inventoryStacks == null) //ÀÎº¥ nullÀÏ °æ¿ì ÃÊ±âÈ­
+        if(CurrentSaveData.inventoryStacks == null) //ì¸ë²¤ nullì¼ ê²½ìš° ì´ˆê¸°í™”
         {
             CurrentSaveData.inventoryStacks = new Dictionary<int, int>();
-            Debug.Log("ÀÎº¥Åä¸® ÃÊ±âÈ­");
+            Debug.Log("ì¸ë²¤í† ë¦¬ ì´ˆê¸°í™”");
         }
 
         OnPlayerStatusChanged?.Invoke();
-        OnPlayerInvChanged?.Invoke(); // ÃÊ±â ·Îµå ÈÄ UI¿¡ ¾Ë·ÁÁÜ
+        OnPlayerInvChanged?.Invoke(); // ì´ˆê¸° ë¡œë“œ í›„ UIì— ì•Œë ¤ì¤Œ
     }
 
-    private void LoadDefaultData() // ³ªÁß¿¡ ¿ªÁ÷·ÄÈ­ ¹æ¹ı ¹Ù²ã¼­µµ ÇØº¸ÀÚ..
+    private void LoadDefaultData() // ë‚˜ì¤‘ì— ì—­ì§ë ¬í™” ë°©ë²• ë°”ê¿”ì„œë„ í•´ë³´ì..
     {
         if(defaultPlayerDataAsset == null)
         {
-            Debug.LogError("±âº» ÇÃ·¹ÀÌ¾î ¿¡¼ÂÀÌ ¿¬°á ¾ÈµÊ");
+            Debug.LogError("ê¸°ë³¸ í”Œë ˆì´ì–´ ì—ì…‹ì´ ì—°ê²° ì•ˆë¨");
         }
         try
         {
@@ -111,44 +111,44 @@ public static PlayerManager Instance { get; private set; }
                 CurrentSaveData.status = defaultStatus;
                 CurrentSaveData.inventoryStacks = new Dictionary<int, int>
                 {
-                    { 201, 3 },  // 201¹ø ¾ÆÀÌÅÛ 3°³ 202¹ø 5°³
+                    { 201, 3 },  // 201ë²ˆ ì•„ì´í…œ 3ê°œ 202ë²ˆ 5ê°œ
                     { 202, 5 },
                     { 203, 1 }
                 };
-                Debug.Log("±âº» ¾ÆÀÌÅÛÀ» °¡Áö°í ½ÃÀÛÇÕ´Ï´Ù");
+                Debug.Log("ê¸°ë³¸ ì•„ì´í…œì„ ê°€ì§€ê³  ì‹œì‘í•©ë‹ˆë‹¤");
             }
         }
         catch (Exception)
         {
-            Debug.Log("±âº» ÇÃ·¹ÀÌ¾î µ¥ÀÌÅÍ ·Îµå ¹× ÆÄ½Ì ¿À·ù");
+            Debug.Log("ê¸°ë³¸ í”Œë ˆì´ì–´ ë°ì´í„° ë¡œë“œ ë° íŒŒì‹± ì˜¤ë¥˜");
         }
     }
 
-    public void SaveData() // ±×³É ¿Ü¿ìÀÚ...
+    public void SaveData() // ê·¸ëƒ¥ ì™¸ìš°ì...
     {
         if(CurrentSaveData == null) return;
 
         string jsonString = JsonConvert.SerializeObject(CurrentSaveData, Formatting.Indented);
         string savePath = Path.Combine(Application.persistentDataPath, SAVE_FILE_NAME);
         File.WriteAllText(savePath, jsonString);
-        Debug.Log("µ¥ÀÌÅÍ ÀúÀå ¼º°ø");
+        Debug.Log("ë°ì´í„° ì €ì¥ ì„±ê³µ");
     }
 
     public void AddExp(int amount)
     {
-        PlayerData tempStatus = CurrentSaveData.status; // struct¿¡ ÀÖ´Â°Ç °ª º¹»çÀÌ¹Ç·Î ÀÓ½Ã º¯¼ö¿¡ º¹»çÇÏ¿© ¼öÁ¤ ÈÄ ´Ù½Ã ÇÒ´ç
+        PlayerData tempStatus = CurrentSaveData.status; // structì— ìˆëŠ”ê±´ ê°’ ë³µì‚¬ì´ë¯€ë¡œ ì„ì‹œ ë³€ìˆ˜ì— ë³µì‚¬í•˜ì—¬ ìˆ˜ì • í›„ ë‹¤ì‹œ í• ë‹¹
         tempStatus.currentexp += amount;
 
         if(tempStatus.currentexp >= tempStatus.maxexp)
         {
             LevelUp(ref  tempStatus);
-            Debug.Log("·¹º§¾÷");
+            Debug.Log("ë ˆë²¨ì—…");
         }
-        CurrentSaveData.status = tempStatus; // º¯°æ µÈ struct¸¦ ´Ù½Ã currentsavedata¿¡ ÇÒ´ç
+        CurrentSaveData.status = tempStatus; // ë³€ê²½ ëœ structë¥¼ ë‹¤ì‹œ currentsavedataì— í• ë‹¹
         OnPlayerStatusChanged?.Invoke();
     }
 
-    public void LevelUp(ref PlayerData status)  // LevelUp ÇÔ¼ö¸¦ struct¸¦ ÂüÁ¶(ref)·Î ¹Ş¾Æ Ã³¸®ÇÏµµ·Ï ¼öÁ¤
+    public void LevelUp(ref PlayerData status)  // LevelUp í•¨ìˆ˜ë¥¼ structë¥¼ ì°¸ì¡°(ref)ë¡œ ë°›ì•„ ì²˜ë¦¬í•˜ë„ë¡ ìˆ˜ì •
     {
         status.level++;
         status.currentexp -= status.maxexp;
@@ -156,21 +156,21 @@ public static PlayerManager Instance { get; private set; }
         SaveData();
     }
 
-    public void AddItem(int itemID) // ¾ÆÀÌÅÛ Ãß°¡
+    public void AddItem(int itemID) // ì•„ì´í…œ ì¶”ê°€
     {
         if (CurrentSaveData.inventoryStacks.ContainsKey(itemID))
         {
-            CurrentSaveData.inventoryStacks[itemID]++; // µñ¼Å³Ê¸®¿¡ ÀÌ¹Ì ÀÖÀ¸¸é ¼ö·® Ãß°¡
+            CurrentSaveData.inventoryStacks[itemID]++; // ë”•ì…”ë„ˆë¦¬ì— ì´ë¯¸ ìˆìœ¼ë©´ ìˆ˜ëŸ‰ ì¶”ê°€
         }
         else
         {
-            CurrentSaveData.inventoryStacks.Add(itemID, 1); // ¾øÀ¸¸é 1°³ »õ·Î Ãß°¡ 
+            CurrentSaveData.inventoryStacks.Add(itemID, 1); // ì—†ìœ¼ë©´ 1ê°œ ìƒˆë¡œ ì¶”ê°€ 
         }
-        OnPlayerInvChanged?.Invoke(); // ÀÎº¥ ¹Ù²ï°Å ¾Ë·ÁÁÖ°í ¿ÀÅä ¼¼ÀÌºê
+        OnPlayerInvChanged?.Invoke(); // ì¸ë²¤ ë°”ë€ê±° ì•Œë ¤ì£¼ê³  ì˜¤í†  ì„¸ì´ë¸Œ
         SaveData();
     }
 
-    public void RemoveItem(int itemID, int amount = 1) // ¾ÆÀÌÅÛ »ç¿ë ÀÌÇÏ´Â additemÀÌ¶û °ÅÀÇ °°À½.
+    public void RemoveItem(int itemID, int amount = 1) // ì•„ì´í…œ ì‚¬ìš© ì´í•˜ëŠ” additemì´ë‘ ê±°ì˜ ê°™ìŒ.
     {
         if (CurrentSaveData.inventoryStacks.ContainsKey(itemID))
         {
@@ -189,22 +189,22 @@ public static PlayerManager Instance { get; private set; }
         string slotKey;
         if (data.type.ToLower() == "weapon")
         {
-            slotKey = "weapon"; // ¹«±â´Â 'weapon' Å° »ç¿ë
+            slotKey = "weapon"; // ë¬´ê¸°ëŠ” 'weapon' í‚¤ ì‚¬ìš©
         }
         else
         {
-            // ÀåÂø ºÒ°¡´ÉÇÑ Å¸ÀÔÀº ¿©±â¼­ Á¾·á
-            Debug.LogWarning($"{data.name}Àº(´Â) ÀåÂø °¡´ÉÇÑ Å¸ÀÔÀÌ ¾Æ´Õ´Ï´Ù.");
+            // ì¥ì°© ë¶ˆê°€ëŠ¥í•œ íƒ€ì…ì€ ì—¬ê¸°ì„œ ì¢…ë£Œ
+            Debug.LogWarning($"{data.name}ì€(ëŠ”) ì¥ì°© ê°€ëŠ¥í•œ íƒ€ì…ì´ ì•„ë‹™ë‹ˆë‹¤.");
             return;
         }
-        //string type = data.type.ToLower(); // ¾ÆÀÌÅÛ Å¸ÀÔÀ» Å°·Î »ç¿ë
-        if (EquippedItems.ContainsKey(slotKey)) // ÀÌ¹Ì ÀåÂøµÈ ¾ÆÀÌÅÛ ÀÖÀ¸¸é
+        //string type = data.type.ToLower(); // ì•„ì´í…œ íƒ€ì…ì„ í‚¤ë¡œ ì‚¬ìš©
+        if (EquippedItems.ContainsKey(slotKey)) // ì´ë¯¸ ì¥ì°©ëœ ì•„ì´í…œ ìˆìœ¼ë©´
         {
-            ItemData oldItem = EquippedItems[slotKey]; // ±âÁ¸ ¾ÆÀÌÅÛÀ» µÇµ¹¸²
+            ItemData oldItem = EquippedItems[slotKey]; // ê¸°ì¡´ ì•„ì´í…œì„ ë˜ëŒë¦¼
             EquippedItems.Remove(slotKey);
         }
         EquippedItems.Add(slotKey, data);
-        Debug.Log($"{data.name} ÀåÂø ¿Ï·á. »óÅÂ ¾÷µ¥ÀÌÆ®.");
+        Debug.Log($"{data.name} ì¥ì°© ì™„ë£Œ. ìƒíƒœ ì—…ë°ì´íŠ¸.");
         OnPlayerInvChanged?.Invoke();
         OnPlayerStatusChanged?.Invoke();
     }
@@ -224,7 +224,7 @@ public static PlayerManager Instance { get; private set; }
         if (EquippedItems.ContainsKey(slotKey) && EquippedItems[slotKey].id == data.id)
         {
             EquippedItems.Remove(slotKey);
-            Debug.Log($"{data.name} ÇØÁ¦ ¿Ï·á. »óÅÂ ¾÷µ¥ÀÌÆ®.");
+            Debug.Log($"{data.name} í•´ì œ ì™„ë£Œ. ìƒíƒœ ì—…ë°ì´íŠ¸.");
             OnPlayerInvChanged?.Invoke();
             OnPlayerStatusChanged?.Invoke();
         }

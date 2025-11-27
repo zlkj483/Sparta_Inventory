@@ -1,10 +1,10 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerSaveData
 {
-    public PlayerData status; //ÇÃ·¹ÀÌ¾îµ¥ÀÌÅÍ
+    public PlayerData status; //í”Œë ˆì´ì–´ë°ì´í„°
 
-    public Dictionary<int, int> inventoryStacks; // ÀÎº¥Åä¸®¸ñ·Ï ¸®½ºÆ®·Î °¡Á®¿À¸é ¾ÆÀÌÅÛÀÌ ¸¹¾Æ Áú °æ¿ì ³Ê¹« Ä¿Áü..
+    public Dictionary<int, int> inventoryStacks; // ì¸ë²¤í† ë¦¬ëª©ë¡ ë¦¬ìŠ¤íŠ¸ë¡œ ê°€ì ¸ì˜¤ë©´ ì•„ì´í…œì´ ë§ì•„ ì§ˆ ê²½ìš° ë„ˆë¬´ ì»¤ì§..
 }

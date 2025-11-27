@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -19,25 +19,25 @@ public class InventorySlot : MonoBehaviour
         currentItemData = data;
         if (ItemManager.Instance != null && !string.IsNullOrEmpty(data.iconName))
         {
-            //¾ÆÀÌÄÜ ÀÌ¸§À» ÁÖ°í Sprite¸¦ ¹Ş¾Æ¿È
+            //ì•„ì´ì½˜ ì´ë¦„ì„ ì£¼ê³  Spriteë¥¼ ë°›ì•„ì˜´
             itemIcon.sprite = ItemManager.Instance.GetItemSprite(data.iconName);
         }
         bool isEquipped = PlayerManager.Instance.IsEquipped(currentItemID);
         if (equipText != null)
         {
-            // ÅØ½ºÆ® ³»¿ë ¼³Á¤
+            // í…ìŠ¤íŠ¸ ë‚´ìš© ì„¤ì •
             equipText.text = "E";
 
-            //  ÀåÂø »óÅÂ¿¡ µû¶ó ÅØ½ºÆ®¸¦ È°¼ºÈ­/ºñÈ°¼ºÈ­
+            //  ì¥ì°© ìƒíƒœì— ë”°ë¼ í…ìŠ¤íŠ¸ë¥¼ í™œì„±í™”/ë¹„í™œì„±í™”
             equipText.gameObject.SetActive(isEquipped);
         }
 
         itemIcon.gameObject.SetActive(true);
         amountText.text = amount > 1 ? amount.ToString() : "";
-        Debug.Log("¾ÆÀÌÅÛ ½½·Ô¿¡ ¼¼ÆÃ¿Ï·á");
+        Debug.Log("ì•„ì´í…œ ìŠ¬ë¡¯ì— ì„¸íŒ…ì™„ë£Œ");
     }
 
-    public void ClearSlot() // ºó ½½·ÔÀÌ¶ó¸é ¾ÆÀÌÄÜ¾ø¾Ö°í amountText °ø¹éÃ³¸®
+    public void ClearSlot() // ë¹ˆ ìŠ¬ë¡¯ì´ë¼ë©´ ì•„ì´ì½˜ì—†ì• ê³  amountText ê³µë°±ì²˜ë¦¬
     {
         currentItemID = 0;
         itemIcon.gameObject.SetActive(false);

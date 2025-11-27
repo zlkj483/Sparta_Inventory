@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft;
@@ -12,9 +12,9 @@ public class ItemManager : MonoBehaviour
 {
     public static ItemManager Instance { get; private set; }
 
-    [Header("¾ÆÀÌÅÛ µ¥ÀÌÅÍ ¿¡¼Â")]
-    [SerializeField] private TextAsset itemDataAsset; // itemdata json ¿¬°á
-    public Dictionary<int, ItemData> ItemDictionary { get; private set; } = new Dictionary<int, ItemData>(); // id·Î ÀĞ¾î¿È
+    [Header("ì•„ì´í…œ ë°ì´í„° ì—ì…‹")]
+    [SerializeField] private TextAsset itemDataAsset; // itemdata json ì—°ê²°
+    public Dictionary<int, ItemData> ItemDictionary { get; private set; } = new Dictionary<int, ItemData>(); // idë¡œ ì½ì–´ì˜´
 
     private void Awake()
     {
@@ -33,7 +33,7 @@ public class ItemManager : MonoBehaviour
 
     public Sprite GetItemSprite(string iconName)
     {
-        // Resources Æú´õ ¾È¿¡ "Icons" Æú´õ°¡ ÀÖ°í ±× ¾È¿¡ ½ºÇÁ¶óÀÌÆ®°¡ ÀÖ´Ù°í °¡Á¤
+        // Resources í´ë” ì•ˆì— "Icons" í´ë”ê°€ ìˆê³  ê·¸ ì•ˆì— ìŠ¤í”„ë¼ì´íŠ¸ê°€ ìˆë‹¤ê³  ê°€ì •
         return Resources.Load<Sprite>($"Icons/{iconName}");
     }
 
@@ -41,28 +41,28 @@ public class ItemManager : MonoBehaviour
     {
         if(itemDataAsset == null)
         {
-            Debug.LogError("json ¿¬°á ½ÇÆĞ");
+            Debug.LogError("json ì—°ê²° ì‹¤íŒ¨");
             return;
         }
         try
         {
             JToken root = JToken.Parse(itemDataAsset.text);
-            JArray itemsArray = (JArray)root["items"]; // items·Î Á¢±ÙÇÏ¿© ¹è¿­·Î °¡Á®¿È.
+            JArray itemsArray = (JArray)root["items"]; // itemsë¡œ ì ‘ê·¼í•˜ì—¬ ë°°ì—´ë¡œ ê°€ì ¸ì˜´.
 
             if(itemsArray == null )
             {
-                Debug.LogError("json¿¡ ¹è¿­ÀÌ ¾ø°Å³ª Àß¸øµÊ");
+                Debug.LogError("jsonì— ë°°ì—´ì´ ì—†ê±°ë‚˜ ì˜ëª»ë¨");
                 return;
             }
             List<ItemData> itemList = itemsArray.ToObject<List<ItemData>>();
             if(itemList != null)
             {
-                ItemDictionary = itemList.ToDictionary(item => item.id); // list¸¦ dictionary<id,itemdata>·Î º¯È¯
+                ItemDictionary = itemList.ToDictionary(item => item.id); // listë¥¼ dictionary<id,itemdata>ë¡œ ë³€í™˜
             }
         }
         catch(Exception)
         {
-            Debug.LogError("¾ÆÀÌÅÛµ¥ÀÌÅÍ ·Îµå ¿À·ù");
+            Debug.LogError("ì•„ì´í…œë°ì´í„° ë¡œë“œ ì˜¤ë¥˜");
         }
     }
 
