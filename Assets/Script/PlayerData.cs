@@ -10,7 +10,7 @@ public struct PlayerData
     public string name;
     public int level;
     public string description;
-    public int attack;
+    public int baseAttack;
     public int defence;
     public int maxhp;
     public int gold;

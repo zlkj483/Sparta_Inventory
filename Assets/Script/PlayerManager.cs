@@ -1,11 +1,14 @@
+using Newtonsoft;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using Newtonsoft;
-using System;
+using System.Globalization;
 using System.IO;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
+using TMPro;
+using Unity.VisualScripting;
+using UnityEngine;
 
 
 public class PlayerManager : MonoBehaviour
@@ -18,11 +21,14 @@ public static PlayerManager Instance { get; private set; }
     [SerializeField]
     private TextAsset defaultPlayerDataAsset;
     private const string SAVE_FILE_NAME = "player_save.json";
+    
 
-    public PlayerSaveData CurrentSaveData { get; private set; } //PlayerSaveData 객체가 PlayerData (struct)와 inventoryItemIds (List)를 모두 포함
+    public PlayerSaveData CurrentSaveData { get; private set; } = new PlayerSaveData();  //PlayerSaveData 객체가 PlayerData (struct)와 inventoryItemIds (List)를 모두 포함
+    public Dictionary<string, ItemData> EquippedItems { get; private set; } = new Dictionary<string, ItemData>();
 
     public PlayerData CurrentStatus => CurrentSaveData.status;
-    public List<int> InventoryItemId => CurrentSaveData.inventoryItemIds;
+    public Dictionary<int, int> InventoryStacks => CurrentSaveData.inventoryStacks;
+
 
     private void Awake()
     {
@@ -37,6 +43,18 @@ public static PlayerManager Instance { get; private set; }
         {
             Destroy(gameObject);
         }
+    }
+    public bool IsEquipped(int itemID)
+    {
+        // EquippedItems의 모든 값(ItemData)을 순회하며 ID를 비교
+        foreach (var item in EquippedItems.Values)
+        {
+            if (item.id == itemID)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void LoadData()
@@ -66,16 +84,17 @@ public static PlayerManager Instance { get; private set; }
             Debug.Log("기본 json 파일로드, 혹은 뉴 게임");
         }
 
-        if(CurrentSaveData.inventoryItemIds == null) //인벤 null일 경우 초기화
+        if(CurrentSaveData.inventoryStacks == null) //인벤 null일 경우 초기화
         {
-            CurrentSaveData.inventoryItemIds = new List<int>();
+            CurrentSaveData.inventoryStacks = new Dictionary<int, int>();
             Debug.Log("인벤토리 초기화");
         }
+
         OnPlayerStatusChanged?.Invoke();
         OnPlayerInvChanged?.Invoke(); // 초기 로드 후 UI에 알려줌
     }
 
-    private void LoadDefaultData()
+    private void LoadDefaultData() // 나중에 역직렬화 방법 바꿔서도 해보자..
     {
         if(defaultPlayerDataAsset == null)
         {
@@ -90,7 +109,13 @@ public static PlayerManager Instance { get; private set; }
             {
                 PlayerData defaultStatus = playerArray[0].ToObject<PlayerData>();
                 CurrentSaveData.status = defaultStatus;
-                CurrentSaveData.inventoryItemIds = new List<int> { 201, 202 };
+                CurrentSaveData.inventoryStacks = new Dictionary<int, int>
+                {
+                    { 201, 3 },  // 201번 아이템 3개 202번 5개
+                    { 202, 5 },
+                    { 203, 1 }
+                };
+                Debug.Log("기본 아이템을 가지고 시작합니다");
             }
         }
         catch (Exception)
@@ -99,7 +124,7 @@ public static PlayerManager Instance { get; private set; }
         }
     }
 
-    public void SaveData()
+    public void SaveData() // 그냥 외우자...
     {
         if(CurrentSaveData == null) return;
 
@@ -131,8 +156,96 @@ public static PlayerManager Instance { get; private set; }
         SaveData();
     }
 
-    public void AddItem(int itemID)
+    public void AddItem(int itemID) // 아이템 추가
     {
+        if (CurrentSaveData.inventoryStacks.ContainsKey(itemID))
+        {
+            CurrentSaveData.inventoryStacks[itemID]++; // 딕셔너리에 이미 있으면 수량 추가
+        }
+        else
+        {
+            CurrentSaveData.inventoryStacks.Add(itemID, 1); // 없으면 1개 새로 추가 
+        }
+        OnPlayerInvChanged?.Invoke(); // 인벤 바뀐거 알려주고 오토 세이브
+        SaveData();
+    }
 
+    public void RemoveItem(int itemID, int amount = 1) // 아이템 사용 이하는 additem이랑 거의 같음.
+    {
+        if (CurrentSaveData.inventoryStacks.ContainsKey(itemID))
+        {
+            CurrentSaveData.inventoryStacks[itemID] -= amount;
+
+            if (CurrentSaveData.inventoryStacks[itemID]  < 0) 
+            {
+                CurrentSaveData.inventoryStacks.Remove(itemID);
+            }
+            OnPlayerInvChanged?.Invoke();
+        }
+    }
+
+    public void EquipItem(ItemData data)
+    {
+        string slotKey;
+        if (data.type.ToLower() == "weapon")
+        {
+            slotKey = "weapon"; // 무기는 'weapon' 키 사용
+        }
+        else
+        {
+            // 장착 불가능한 타입은 여기서 종료
+            Debug.LogWarning($"{data.name}은(는) 장착 가능한 타입이 아닙니다.");
+            return;
+        }
+        //string type = data.type.ToLower(); // 아이템 타입을 키로 사용
+        if (EquippedItems.ContainsKey(slotKey)) // 이미 장착된 아이템 있으면
+        {
+            ItemData oldItem = EquippedItems[slotKey]; // 기존 아이템을 되돌림
+            EquippedItems.Remove(slotKey);
+        }
+        EquippedItems.Add(slotKey, data);
+        Debug.Log($"{data.name} 장착 완료. 상태 업데이트.");
+        OnPlayerInvChanged?.Invoke();
+        OnPlayerStatusChanged?.Invoke();
+    }
+
+    public void UnEquipItem(ItemData data)
+    {
+        string slotKey;
+        if (data.type.ToLower() == "weapon")
+        {
+            slotKey = "weapon";
+        }
+        else
+        {
+            return;
+        }
+        //string type = data.type.ToLower();
+        if (EquippedItems.ContainsKey(slotKey) && EquippedItems[slotKey].id == data.id)
+        {
+            EquippedItems.Remove(slotKey);
+            Debug.Log($"{data.name} 해제 완료. 상태 업데이트.");
+            OnPlayerInvChanged?.Invoke();
+            OnPlayerStatusChanged?.Invoke();
+        }
+    }
+    public int TotalAttack()
+    {
+        int totalAttack = CurrentStatus.baseAttack;
+        foreach (var item in EquippedItems.Values)
+        {
+            totalAttack += item.attack;
+        }
+        return totalAttack;
+    }
+
+    public int TotalDefence()
+    {
+        int totalDef = CurrentStatus.defence;
+        foreach(var item in EquippedItems.Values)
+        {
+            totalDef += item.defence;
+        }
+        return totalDef;
     }
 }

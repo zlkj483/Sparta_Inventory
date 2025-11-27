@@ -16,8 +16,12 @@ public struct ItemData
     public int id;
     public string name;
     public string type;
+    public int attack;
+    public int defence;
     public EffectData effect;
     public int damage;
+    public string description;
+    public string iconName;
 
 }
 

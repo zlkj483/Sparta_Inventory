@@ -4,6 +4,8 @@
       "id": 201,
       "name": "회복 포션",
       "type": "consumable",
+      "description": "회복포션입니다. 50 의 체력을 회복합니다",
+      "iconName": "Potion",
       "effect": {
         "type": "heal",
         "value": 50
@@ -12,8 +14,19 @@
     {
       "id": 202,
       "name": "폭탄",
+      "type": "consumable",
+      "damage": 25,
+      "description": "폭탄입니다, 25 의 적에게 25의 데미지를 입힙니다.",
+      "iconName": "Boom"
+    },
+    {
+      "id": 203,
+      "name": "철검",
       "type": "weapon",
-      "damage": 25
+      "attack": 25,
+      "defence": 5,
+      "description": "철검입니다. 장착 시 25의 공격력을 올려줍니다.",
+      "iconName": "IronSword"
     }
   ]
   }

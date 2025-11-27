@@ -5,7 +5,7 @@
       "name": "주니어개발자",
       "level": 1,
       "description": "주니어 개발자 입니다. 오늘도 성장을 위해 밤샘 코딩을 하고 있습니다.",
-      "attack": 10,
+      "baseAttack": 10,
       "defence": 5,
       "hp": 100,
       "gold": 1000,

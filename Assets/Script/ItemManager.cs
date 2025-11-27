@@ -31,6 +31,12 @@ public class ItemManager : MonoBehaviour
         }
     }
 
+    public Sprite GetItemSprite(string iconName)
+    {
+        // Resources 폴더 안에 "Icons" 폴더가 있고 그 안에 스프라이트가 있다고 가정
+        return Resources.Load<Sprite>($"Icons/{iconName}");
+    }
+
     public void LoadItemData()
     {
         if(itemDataAsset == null)
